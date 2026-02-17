@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistem Raport Digital{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Sistem Raport</span>
+            </a>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Beranda</a>
+                {% if session.admin_logged_in %}
+                    <a href="{{ url_for('admin') }}"><i class="fas fa-cog"></i> Admin</a>
+                    <a href="{{ url_for('change_password') }}"><i class="fas fa-key"></i> Ubah Password</a>
+                    <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login Admin</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                        <span class="close-btn" onclick="this.parentElement.style.display='none'">&times;</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Sistem Raport Digital. All rights reserved.</p>
+        {% if session.admin_logged_in %}
+            <p class="login-info">Login sebagai: <strong>{{ session.admin_username }}</strong></p>
+        {% endif %}
+    </footer>
+
+    <script>
+        // Auto close flash messages after 5 seconds
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.display = 'none';
+            });
+        }, 5000);
+        
+        // Password strength indicator (untuk change password)
+        const passwordInput = document.getElementById('new_password');
+        if (passwordInput) {
+            passwordInput.addEventListener('input', function() {
+                const strengthIndicator = document.querySelector('.password-strength');
+                if (!strengthIndicator) {
+                    const indicator = document.createElement('div');
+                    indicator.className = 'password-strength';
+                    this.parentNode.appendChild(indicator);
+                }
+                
+                const password = this.value;
+                let strength = 0;
+                
+                if (password.length >= 6) strength++;
+                if (password.length >= 8) strength++;
+                if (/[A-Z]/.test(password)) strength++;
+                if (/[0-9]/.test(password)) strength++;
+                if (/[^A-Za-z0-9]/.test(password)) strength++;
+                
+                const indicator = this.parentNode.querySelector('.password-strength');
+                indicator.innerHTML = 'Kekuatan password: ' + 
+                    ['Sangat Lemah', 'Lemah', 'Cukup', 'Baik', 'Sangat Baik'][strength];
+                indicator.className = 'password-strength strength-' + strength;
+            });
+        }
+    </script>
+</body>
+</html>
