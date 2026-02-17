@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Siswa - Sistem Raport{% endblock %}
+
+{% block content %}
+<div class="form-header">
+    <a href="{{ url_for('admin') }}" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Kembali ke Admin
+    </a>
+    <h1><i class="fas fa-user-edit"></i> Edit Data Siswa</h1>
+</div>
+
+<div class="form-container">
+    <form method="POST" enctype="multipart/form-data" class="modern-form">
+        <div class="form-grid">
+            <div class="form-section">
+                <h3><i class="fas fa-user-circle"></i> Informasi Siswa</h3>
+                
+                <div class="form-group">
+                    <label for="absen"><i class="fas fa-id-badge"></i> Nomor Absen *</label>
+                    <input type="number" 
+                           id="absen" 
+                           name="absen" 
+                           value="{{ siswa.absen }}"
+                           placeholder="Contoh: 1"
+                           min="1"
+                           required
+                           class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="nama"><i class="fas fa-signature"></i> Nama Lengkap *</label>
+                    <input type="text" 
+                           id="nama" 
+                           name="nama" 
+                           value="{{ siswa.nama }}"
+                           placeholder="Nama siswa"
+                           required
+                           class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="foto"><i class="fas fa-camera"></i> Foto Siswa</label>
+                    <div class="file-upload">
+                        <input type="file" 
+                               id="foto" 
+                               name="foto" 
+                               accept="image/*"
+                               class="file-input">
+                        <label for="foto" class="file-label">
+                            <i class="fas fa-upload"></i>
+                            <span>Pilih Foto Baru</span>
+                        </label>
+                    </div>
+                    {% if siswa.foto %}
+                        <input type="hidden" name="foto_lama" value="{{ siswa.foto }}">
+                        <div class="current-photo">
+                            <img src="{{ url_for('uploaded_file', filename=siswa.foto) }}" 
+                                 alt="Foto saat ini"
+                                 class="preview-photo">
+                            <small>Foto saat ini</small>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3><i class="fas fa-chart-bar"></i> Nilai Mata Pelajaran</h3>
+                
+                <div class="score-inputs">
+                    {% set subjects = [
+                        ('b_inggris', 'Bahasa Inggris', 'fas fa-language'),
+                        ('b_indo', 'Bahasa Indonesia', 'fas fa-book'),
+                        ('b_sunda', 'Bahasa Sunda', 'fas fa-leaf'),
+                        ('mtk', 'Matematika', 'fas fa-calculator'),
+                        ('fisika', 'Fisika', 'fas fa-atom'),
+                        ('kimia', 'Kimia', 'fas fa-flask'),
+                        ('coding', 'Coding', 'fas fa-code'),
+                        ('pjok', 'PJOK', 'fas fa-running'),
+                        ('pkn', 'PKN', 'fas fa-landmark'),
+                        ('agama', 'Agama', 'fas fa-pray')
+                    ] %}
+                    
+                    {% for field, name, icon in subjects %}
+                        <div class="form-group">
+                            <label for="{{ field }}">
+                                <i class="{{ icon }}"></i> {{ name }}
+                            </label>
+                            <div class="score-input-group">
+                                <input type="number" 
+                                       id="{{ field }}" 
+                                       name="{{ field }}" 
+                                       value="{{ siswa[field] }}"
+                                       min="0" 
+                                       max="100"
+                                       class="score-input">
+                                <span class="score-max">/ 100</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-save"></i> Simpan Perubahan
+            </button>
+            <a href="{{ url_for('admin') }}" class="btn-secondary">
+                <i class="fas fa-times"></i> Batal
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Preview foto sebelum upload
+    document.getElementById('foto').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewDiv = document.querySelector('.current-photo');
+                if (previewDiv) {
+                    previewDiv.remove();
+                }
+                const newPreview = document.createElement('div');
+                newPreview.className = 'current-photo';
+                newPreview.innerHTML = `
+                    <img src="${e.target.result}" alt="Preview foto" class="preview-photo">
+                    <small>Preview foto baru</small>
+                `;
+                document.querySelector('.file-upload').after(newPreview);
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+{% endblock %}
