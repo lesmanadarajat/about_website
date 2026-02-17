@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Beranda - Sistem Raport{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title"><i class="fas fa-chart-line"></i> Sistem Raport Digital</h1>
+        <p class="hero-subtitle">Pantau perkembangan akademik siswa dengan mudah dan real-time</p>
+    </div>
+</div>
+
+<div class="main-card">
+    <div class="card-header">
+        <h2><i class="fas fa-search"></i> Cari Data Siswa</h2>
+        <p>Masukkan nomor absen siswa untuk melihat raport lengkap</p>
+    </div>
+    
+    <div class="card-body">
+        <form action="{{ url_for('result') }}" method="POST" class="search-form">
+            <div class="form-group">
+                <label for="absen"><i class="fas fa-id-badge"></i> Nomor Absen</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-user-graduate"></i>
+                    <input type="number" 
+                           id="absen" 
+                           name="absen" 
+                           placeholder="Contoh: 1" 
+                           min="1" 
+                           required
+                           class="modern-input">
+                </div>
+                <small class="form-text">Masukkan nomor absen siswa (1, 2, 3, dst.)</small>
+            </div>
+            
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-search"></i> Tampilkan Raport
+            </button>
+        </form>
+        
+        <div class="features">
+            <div class="feature-item">
+                <i class="fas fa-chart-bar"></i>
+                <h3>Analisis Lengkap</h3>
+                <p>Lihat perkembangan nilai semua mata pelajaran</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-trophy"></i>
+                <h3>Peringkat Kelas</h3>
+                <p>Ketahui posisi siswa dalam peringkat kelas</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Data Aman</h3>
+                <p>Data tersimpan dengan aman dan terenkripsi</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="info-section">
+    <h3><i class="fas fa-info-circle"></i> Informasi Sistem</h3>
+    <p>Sistem ini menampilkan nilai dari 10 mata pelajaran: Bahasa Inggris, Bahasa Indonesia, Bahasa Sunda, Matematika, Fisika, Kimia, Coding, PJOK, PKN, dan Agama.</p>
+</div>
+{% endblock %}
