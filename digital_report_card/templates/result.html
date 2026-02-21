@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Raport {{ siswa.nama }} - Sistem Raport{% endblock %}
+
+{% block content %}
+<div class="result-header">
+    <a href="{{ url_for('index') }}" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Kembali
+    </a>
+    <h1><i class="fas fa-file-alt"></i> Raport Siswa</h1>
+</div>
+
+<div class="profile-section">
+    <div class="profile-card">
+        <div class="profile-img">
+            {% if siswa.foto %}
+                <img src="{{ url_for('uploaded_file', filename=siswa.foto) }}" alt="{{ siswa.nama }}">
+            {% else %}
+                <div class="default-avatar">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+            {% endif %}
+        </div>
+        <div class="profile-info">
+            <h2>{{ siswa.nama }}</h2>
+            <div class="profile-details">
+                <div class="detail-item">
+                    <i class="fas fa-id-badge"></i>
+                    <span>Absen: <strong>{{ siswa.absen }}</strong></span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-trophy"></i>
+                    <span>Peringkat: <strong>{{ ranking }} dari {{ total_siswa }}</strong></span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Total Nilai: <strong>{{ total_nilai }}</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="rank-badge">
+    <div class="rank-circle rank-{{ 1 if ranking == 1 else 2 if ranking == 2 else 3 if ranking == 3 else 'other' }}">
+        <i class="fas fa-crown"></i>
+        <span class="rank-number">{{ ranking }}</span>
+        <span class="rank-text">Peringkat</span>
+    </div>
+</div>
+
+<div class="scores-section">
+    <h3><i class="fas fa-list-ol"></i> Nilai Mata Pelajaran</h3>
+    
+    <div class="score-grid">
+        <div class="score-card subject-english">
+            <div class="score-icon">
+                <i class="fas fa-language"></i>
+            </div>
+            <h4>Bahasa Inggris</h4>
+            <div class="score-value">{{ siswa.b_inggris }}</div>
+            <div class="score-grade">{{ 'A' if siswa.b_inggris >= 85 else 'B' if siswa.b_inggris >= 70 else 'C' if siswa.b_inggris >= 60 else 'D' }}</div>
+        </div>
+        
+        <div class="score-card subject-indonesia">
+            <div class="score-icon">
+                <i class="fas fa-book"></i>
+            </div>
+            <h4>Bahasa Indonesia</h4>
+            <div class="score-value">{{ siswa.b_indo }}</div>
+            <div class="score-grade">{{ 'A' if siswa.b_indo >= 85 else 'B' if siswa.b_indo >= 70 else 'C' if siswa.b_indo >= 60 else 'D' }}</div>
+        </div>
+        
+        <div class="score-card subject-sunda">
+            <div class="score-icon">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <h4>Bahasa Sunda</h4>
+            <div class="score-value">{{ siswa.b_sunda }}</div>
+            <div class="score-grade">{{ 'A' if siswa.b_sunda >= 85 else 'B' if siswa.b_sunda >= 70 else 'C' if siswa.b_sunda >= 60 else 'D' }}</div>
+        </div>
+        
+        <div class="score-card subject-math">
+            <div class="score-icon">
+                <i class="fas fa-calculator"></i>
+            </div>
+            <h4>Matematika</h4>
+            <div class="score-value">{{ siswa.mtk }}</div>
+            <div class="score-grade">{{ 'A' if siswa.mtk >= 85 else 'B' if siswa.mtk >= 70 else 'C' if siswa.mtk >= 60 else 'D' }}</div>
+        </div>
+        
+        <div class="score-card subject-physics">
+            <div class="score-icon">
+                <i class="fas fa-atom"></i>
+            </div>
+            <h4>Fisika</h4>
+            <div class="score-value">{{ siswa.fisika }}</div>
+            <div class="score-grade">{{ 'A' if siswa.fisika >= 85 else 'B' if siswa.fisika >= 70 else 'C' if siswa.fisika >= 60 else 'D' }}</div>
+        </div>
+        
+        <div class="score-card subject-chemistry">
+            <div class="score-icon">
+                <i class="fas fa-flask"></i>
+            </div>
+            <h4>Kimia</h4>
+            <div class="score-value">{{ siswa.kimia }}</div>
+            <div class="score-grade">{{ 'A' if siswa.kimia >= 85 else 'B' if siswa.kimia >= 70 else 'C' if siswa.kimia >= 60 else 'D' }}</div>
+        </div>
+        
+        <div class="score-card subject-coding">
+            <div class="score-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <h4>Coding</h4>
+            <div class="score-value">{{ siswa.coding }}</div>
+            <div class="score-grade">{{ 'A' if siswa.coding >= 85 else 'B' if siswa.coding >= 70 else 'C' if siswa.coding >= 60 else 'D' }}</div>
+        </div>
+        
+        <div class="score-card subject-sports">
+            <div class="score-icon">
+                <i class="fas fa-running"></i>
+            </div>
+            <h4>PJOK</h4>
+            <div class="score-value">{{ siswa.pjok }}</div>
+            <div class="score-grade">{{ 'A' if siswa.pjok >= 85 else 'B' if siswa.pjok >= 70 else 'C' if siswa.pjok >= 60 else 'D' }}</div>
+        </div>
+        
+        <div class="score-card subject-civics">
+            <div class="score-icon">
+                <i class="fas fa-landmark"></i>
+            </div>
+            <h4>PKN</h4>
+            <div class="score-value">{{ siswa.pkn }}</div>
+            <div class="score-grade">{{ 'A' if siswa.pkn >= 85 else 'B' if siswa.pkn >= 70 else 'C' if siswa.pkn >= 60 else 'D' }}</div>
+        </div>
+        
+        <div class="score-card subject-religion">
+            <div class="score-icon">
+                <i class="fas fa-pray"></i>
+            </div>
+            <h4>Agama</h4>
+            <div class="score-value">{{ siswa.agama }}</div>
+            <div class="score-grade">{{ 'A' if siswa.agama >= 85 else 'B' if siswa.agama >= 70 else 'C' if siswa.agama >= 60 else 'D' }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="summary-section">
+    <div class="summary-card">
+        <h3><i class="fas fa-chart-pie"></i> Ringkasan</h3>
+        <div class="summary-content">
+            <div class="summary-item">
+                <span>Rata-rata Nilai</span>
+                <strong>{{ "%.2f"|format(total_nilai / 10) }}</strong>
+            </div>
+            <div class="summary-item">
+                <span>Nilai Tertinggi</span>
+                <strong>{{ 
+                    [siswa.b_inggris, siswa.b_indo, siswa.b_sunda, siswa.mtk, siswa.fisika, 
+                     siswa.kimia, siswa.coding, siswa.pjok, siswa.pkn, siswa.agama]|max 
+                }}</strong>
+            </div>
+            <div class="summary-item">
+                <span>Nilai Terendah</span>
+                <strong>{{ 
+                    [siswa.b_inggris, siswa.b_indo, siswa.b_sunda, siswa.mtk, siswa.fisika, 
+                     siswa.kimia, siswa.coding, siswa.pjok, siswa.pkn, siswa.agama]|min 
+                }}</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="print-section">
+    <button onclick="window.print()" class="btn-print">
+        <i class="fas fa-print"></i> Cetak Raport
+    </button>
+</div>
+
+<style>
+    @media print {
+        .navbar, .footer, .back-btn, .print-section {
+            display: none !important;
+        }
+    }
+</style>
+{% endblock %}
