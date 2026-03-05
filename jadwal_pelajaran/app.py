@@ -259,4 +259,5 @@ def get_jadwal_by_hari(nama_hari, tipe):
     })
 
 if __name__ == '__main__':
+
     app.run(debug=True, port=5000)
